@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mesh</title>
+</head>
+<body>
+<h3>choose files from recontruction folder</h3>
+    <script id="vertex-shader" type="x-shader/x-vertex">
+            #version 300 es
+            in vec3 vPosition;
+            uniform vec3 theta;
+            uniform vec3 stheta;
+            uniform vec3 sf; //scaling factor
+            uniform vec4 d;
+            void
+            main()
+            { vec3 angles = radians( theta );
+              vec3 c = cos( angles );
+              vec3 s = sin( angles );
+              
+              mat4 rx = mat4( 1.0,  0.0,  0.0, 0.0,
+                  0.0,  c.x,  s.x, 0.0,
+                  0.0, -s.x,  c.x, 0.0,
+                  0.0,  0.0,  0.0, 1.0 );
+            
+              mat4 ry = mat4( c.y, 0.0, -s.y, 0.0,
+                  0.0, 1.0,  0.0, 0.0,
+                  s.y, 0.0,  c.y, 0.0,
+                  0.0, 0.0,  0.0, 1.0 );
+            
+            
+              mat4 rz = mat4( c.z, s.z, 0.0, 0.0,
+                  -s.z,  c.z, 0.0, 0.0,
+                  0.0,  0.0, 1.0, 0.0,
+                  0.0,  0.0, 0.0, 1.0 );
+
+              mat4 sc = mat4( sf.x, 0.0, 0.0, 0.0,
+                            0.0,  sf.y, 0.0, 0.0,
+                            0.0,  0.0, sf.z, 0.0,
+                            0.0,  0.0, 0.0, 1.0 );
+              mat4 smat = mat4( 1.0, stheta.y, stheta.z, 0.0,
+                            stheta.x,  1.0, stheta.z, 0.0,
+                            stheta.x,  stheta.y, 1.0, 0.0,
+                            0.0,  0.0, 0.0, 1.0 );
+              
+            
+              
+                  gl_Position = (smat* rz * ry * rx * sc * vec4(vPosition,1.0)) + d;
+                 
+                  gl_PointSize = 1.2;
+              }
+            </script>
+        
+            <script id="fragment-shader" type="x-shader/x-fragment">
+            #version 300 es
+              precision highp float;
+              out vec4 fragColor;
+        
+              void main()
+              {
+                  fragColor = vec4(0,0,0,1);
+              }
+            </script>
+        
+        
+            <script src="http://interactivecomputergraphics.com/8E/Code%20update/Common/initShadersES6.js"></script>
+            <script src="http://interactivecomputergraphics.com/8E/Code%20update/Common/MVES6.js"></script>
+        
+            <script type="text/javascript" src="mesh.js"></script>
+          </head>
+          <input type="file" name="inputfile"
+          id="inputfile">
+          <pre id="output"></pre>
+      
+          <body style="background-color:rgb(255, 255, 255);"> 
+            <canvas id="gl-canvas" width="700" height="700"  style="border: 1px solid black;">
+              Oops ... your browser doesn't support the HTML5 canvas element
+            </canvas>
+            <button id = "Button1x">Increase theta x</button>
+            <button id = "Button2x">Decrease theta x</button>
+            <button id = "Button1y">Increase theta y</button>
+            <button id = "Button2y">Decrease theta y</button>
+            <button id = "Button1z">Increase theta z</button>
+            <button id = "Button2z">Decrease theta z</button>
+            <button id = "shiftx">shift x</button>
+            <button id = "shiftnx">shift -x</button>
+            <button id = "shifty">shift y</button>
+            <button id = "shiftny">shift -y</button>
+            <button id = "shiftz">shift z</button>
+            <button id = "shiftnz">shift -z</button>
+            <button id = "growx">grow x</button>
+            <button id = "shrinkx">shrink x</button>
+            <button id = "growy">grow y</button>
+            <button id = "shrinky">shrink y</button>
+            <button id = "growz">grow z</button>
+            <button id = "shrinkz">shrink z</button>
+            <button id = "shearx">shear x</button>
+            <button id = "shearnx">shear -x</button>
+            <button id = "sheary">shear y</button>
+            <button id = "shearny">shear- y</button>
+            <button id = "shearz">shear z</button>
+            <button id = "shearnz">shear -z</button>
+            <button id = "reset">reset</button>
+            <button id = "reflectx">reflect y</button>
+            <button id = "reflecty">reflect x</button>
+            <button id = "reflectz">reflect z</button>
+            <!-- <center> -->
+
+          <script type="text/javascript" src="MVES6.js"></script>
+          <script type="text/javascript" src="map.js"></script>
+          </body>
+        </html>
+</body>
+</html>
